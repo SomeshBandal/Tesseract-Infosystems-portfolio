@@ -1,0 +1,253 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-neon: var(--neon);
+  --color-neon-deep: var(--neon-deep);
+  --color-aqua: var(--aqua);
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-sans: "Figtree", system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.985 0.008 175);
+  --foreground: oklch(0.27 0.04 210);
+  --card: oklch(1 0.003 175);
+  --card-foreground: oklch(0.27 0.04 210);
+  --popover: oklch(1 0.003 175);
+  --popover-foreground: oklch(0.27 0.04 210);
+  --primary: oklch(0.6 0.1 185);
+  --primary-foreground: oklch(0.99 0.005 175);
+  --secondary: oklch(0.95 0.02 180);
+  --secondary-foreground: oklch(0.32 0.04 205);
+  --muted: oklch(0.96 0.015 180);
+  --muted-foreground: oklch(0.53 0.03 205);
+  --accent: oklch(0.76 0.14 70);
+  --accent-foreground: oklch(0.25 0.05 60);
+  --destructive: oklch(0.6 0.18 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.5 0.04 195 / 16%);
+  --input: oklch(0.5 0.04 195 / 22%);
+  --ring: oklch(0.6 0.1 185);
+  --neon: oklch(0.6 0.1 185);
+  --neon-deep: oklch(0.48 0.09 200);
+  --aqua: oklch(0.76 0.14 70);
+  --gradient-neon: linear-gradient(120deg, var(--neon-deep), var(--neon) 55%, var(--aqua));
+  --glow-sm: 0 1px 2px oklch(0.35 0.05 200 / 6%), 0 4px 12px oklch(0.35 0.05 200 / 5%);
+  --glow-md: 0 8px 24px oklch(0.35 0.05 200 / 9%);
+  --glow-lg: 0 18px 44px oklch(0.35 0.05 200 / 12%);
+}
+
+
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--neon) 40%, transparent);
+  }
+}
+
+@utility grid-bg {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--foreground) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--foreground) 5%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 20%, transparent 72%);
+}
+
+@utility text-gradient {
+  background: var(--gradient-neon);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility glass {
+  background: color-mix(in oklab, var(--card) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  box-shadow: var(--glow-sm);
+}
+
+@utility neon-border {
+  border: 1px solid color-mix(in oklab, var(--primary) 22%, transparent);
+}
+
+@utility glow-text {
+  text-shadow: none;
+}
+
+
+@utility card-tilt {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--glow-lg);
+    border-color: color-mix(in oklab, var(--primary) 40%, transparent);
+  }
+}
+
+
+@utility reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  &[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes tesseract-spin {
+  from {
+    transform: rotateX(-12deg) rotateY(0deg) rotateZ(0.001deg);
+  }
+  to {
+    transform: rotateX(348deg) rotateY(360deg) rotateZ(0.001deg);
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(700%);
+  }
+}
+
+@utility animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
+@utility animate-pulse-glow {
+  animation: pulse-glow 4.5s ease-in-out infinite;
+}
+@utility animate-spin-slow {
+  animation: spin-slow 26s linear infinite;
+}
+@utility animate-tesseract-spin {
+  animation: tesseract-spin 22s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+@utility animate-scan {
+  animation: scan 6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-tesseract-spin {
+    animation-duration: 60s;
+  }
+}
+
+/* Project case-study list scrollbar */
+.project-list {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--primary) 45%, transparent) transparent;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 9%,
+    #000 91%,
+    transparent
+  );
+  mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
+}
+.project-list::-webkit-scrollbar {
+  width: 6px;
+}
+.project-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.project-list::-webkit-scrollbar-thumb {
+  background-color: color-mix(in oklab, var(--primary) 40%, transparent);
+  border-radius: 999px;
+}
